@@ -66,6 +66,7 @@
     <Content Include="assets\images\betMaxButton.png" />
     <Content Include="assets\images\betOneButton.png" />
     <Content Include="assets\images\betTenButton.png" />
+    <Content Include="assets\images\blankSymbol.jpg" />
     <Content Include="assets\images\blankSymbol.png" />
     <Content Include="assets\images\button-template.png" />
     <Content Include="assets\images\cherrySymbol.png" />

@@ -11,6 +11,7 @@ var canvas = document.getElementById("canvas");
 var stage;
 var stats;
 var assets;
+//* Images
 var manifest = [
     { id: "background", src: "assets/images/slotMachine.png" },
     { id: "clicked", src: "assets/audio/clicked.wav" },
@@ -69,7 +70,7 @@ var jackPotLabel;
 var creditsLabel;
 var betLabel;
 var resultLabel;
-// Reel1 Bitmap variable
+// Roll Bitmap variable
 var roll1;
 var roll2;
 var roll3;
@@ -357,14 +358,39 @@ function lab_img_reset() {
     resultLabel = new objects.Label("" + winnings, 263, 307, true);
     stage.addChild(resultLabel);
 }
-// Callback function that allows me to respond to button click events
+// Callback functions that change the alpha transparency of the button
 function spinButtonClicked(event) {
     createjs.Sound.play("clicked");
-    spinResult = Reels();
-    fruits = spinResult[0] + " - " + spinResult[1] + " - " + spinResult[2];
-    console.log(fruits);
+    if (playerMoney == 0) {
+        if (confirm("You ran out of Money! \n Do you want to play again?")) {
+            resetAll();
+            showPlayerStats();
+            lab_img_reset();
+        }
+    }
+    else if (playerBet > playerMoney) {
+        alert("You don't have enough Money to place that bet.");
+    }
+    else if (playerBet < 0) {
+        alert("All bets must be a positive $ amount.");
+    }
+    else if (playerBet == 0) {
+        alert("Please Enter Bet amount");
+    }
+    else if (playerBet <= playerMoney) {
+        spinResult = Reels();
+        fruits = spinResult[0] + " - " + spinResult[1] + " - " + spinResult[2];
+        console.log(fruits);
+        addimages();
+        determineWinnings();
+        turn++;
+        showPlayerStats();
+    }
+    else {
+        alert("Please enter a valid bet amount");
+    }
 }
-// Callback functions that change the alpha transparency of the button
+// resetButton Click Event
 function resetButtonClicked(event) {
     createjs.Sound.play("clicked");
     resetFruitTally();
@@ -402,9 +428,9 @@ function main() {
     background = new createjs.Bitmap(assets.getResult("background"));
     stage.addChild(background);
     // add spinButton sprite
-    spinButton = new objects.Button("spinButton", 225, 334, false);
-    stage.addChild(spinButton);
-    spinButton.on("click", spinButtonClicked, this);
+    //spinButton = new objects.Button("spinButton", 225, 334, false);
+    //stage.addChild(spinButton);
+    //spinButton.on("click", spinButtonClicked, this);
     //Adding intial values to Background
     stage.removeChild(jackPotLabel);
     stage.removeChild(creditsLabel);
